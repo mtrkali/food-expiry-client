@@ -1,10 +1,23 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router';
+import RootLayout from '../Lay;outs/RootLayout';
+import Home from '../Pages/Home/Home';
+import TermsService from '../Pages/Shared/TermsService';
 
 const router = createBrowserRouter([
     {
-        path: '/',
-        element: <h1>hellow bangladaesh</h1>
+        path:'/',
+        Component:RootLayout,
+        children: [
+            {
+                index: true,
+                Component: Home
+            },
+            {
+                path: 'terms',
+                Component: TermsService
+            }
+        ]
     }
 ])
 

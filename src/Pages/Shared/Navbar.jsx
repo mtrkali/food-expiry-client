@@ -31,8 +31,8 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <Link to='login'><a className="btn btn-secondary text-xs mr-2">Login</a></Link>
-                <Link to='register'><a className="hidden md:flex lg:flex btn btn-primary text-xs">Register</a></Link>
+                <NavLink to='login'><button className="btn btn-secondary text-xs mr-2">Login</button></NavLink>
+                <NavLink to='register'><button className="hidden md:flex lg:flex btn btn-primary text-xs">Register</button></NavLink>
             </div>
         </div>
     );

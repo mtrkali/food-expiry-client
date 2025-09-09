@@ -15,8 +15,6 @@ const TermsService = () => {
                 <h2 className="text-3xl mt-10">Refund Policy</h2>
 
                 Refunds are provided only in specific cases as outlined in our refund policy. Please contact us directly for any refund requests. We strive to resolve any issues promptly and fairly.
-
-                <Link to='/'><button className='btn btn-primary mt-10'>Back To Home</button></Link>
             </div>
         </div>
     );

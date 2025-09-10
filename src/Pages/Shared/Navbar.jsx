@@ -4,21 +4,23 @@ import { Link, NavLink } from 'react-router';
 import { AuthContext } from '../../Contexts/AuthContext';
 
 const Navbar = () => {
-    const{user,logOut} = useContext(AuthContext);
-    const handleLogout = () =>{
+    const { user, logOut } = useContext(AuthContext);
+    const handleLogout = () => {
         logOut()
-        .then(()=>{
-            console.log('signOut success')
-        })
-        .catch(err =>{
-            console.log(err.message)
-        })
+            .then(() => {
+                console.log('signOut success')
+            })
+            .catch(err => {
+                console.log(err.message)
+            })
     }
     const links = <>
         <li><NavLink to='/'>Home</NavLink></li>
         <li><NavLink to=''>Fridge</NavLink></li>
-        <li><NavLink to=''>AddFood</NavLink></li>
-        <li><NavLink to=''>MyItems</NavLink></li>
+        {user && <>
+            <li><NavLink to='addfood'>AddFood</NavLink></li>
+            <li><NavLink to='myitems'>MyItems</NavLink></li>
+        </>}
     </>
     return (
         <div className="navbar bg-base-100 shadow-sm">

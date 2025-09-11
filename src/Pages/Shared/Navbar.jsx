@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import logo from '../../assets/logo.png'
 import { Link, NavLink } from 'react-router';
 import { AuthContext } from '../../Contexts/AuthContext';
+import { Tooltip } from 'react-tooltip';
 
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
@@ -14,6 +15,7 @@ const Navbar = () => {
                 console.log(err.message)
             })
     }
+    
     const links = <>
         <li><NavLink to='/'>Home</NavLink></li>
         <li><NavLink to=''>Fridge</NavLink></li>
@@ -45,7 +47,20 @@ const Navbar = () => {
             </div>
             <div className="navbar-end">
                 {
-                    user ? <button onClick={handleLogout} className='btn'>Log Out</button> :
+                    user ? <>
+                        <div>
+                            <img
+                                className="w-12 h-12 rounded-full"
+                                src={user?.photoURL || logo}
+                                alt=""
+                                data-tooltip-id="user-tooltip"
+                                data-tooltip-content={user?.displayName || "Guest User"}
+                            />
+                            <Tooltip id="user-tooltip" place="bottom" />
+                        </div>
+                        <button onClick={handleLogout} className='btn'>Log Out</button>
+                    </>
+                        :
                         <>
                             <NavLink to='login'><button className="btn btn-secondary text-xs mr-2">Login</button></NavLink>
                             <NavLink to='register'><button className="hidden md:flex lg:flex btn btn-primary text-xs">Register</button></NavLink>

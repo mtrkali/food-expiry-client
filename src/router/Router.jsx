@@ -8,6 +8,8 @@ import Login from '../Pages/Login/Login';
 import AddFood from '../Pages/AddFood/AddFood';
 import MyItems from '../Pages/MyItems/MyItems';
 import PrivateRoute from '../PrivateRoute/PrivateRoute';
+import Fridge from '../Pages/Fridge/Fridge';
+import FoodDetails from '../Pages/FoodDetails/FoodDetails';
 
 const router = createBrowserRouter([
     {
@@ -38,6 +40,17 @@ const router = createBrowserRouter([
                 path: 'myitems',
                 element:<PrivateRoute><MyItems></MyItems></PrivateRoute>
             },
+            ,
+            {
+                path: 'fridge',
+                loader: ()=>fetch('http://localhost:3000/foods'),
+                Component: Fridge,
+            },
+            {
+                path: '/foodDetails/:id',
+                loader: ({params})=>fetch(`http://localhost:3000/foods/${params.id}`),
+                Component: FoodDetails,
+            }
         ]
     }
 ])

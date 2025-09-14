@@ -3,6 +3,7 @@ import logo from '../../assets/logo.png'
 import { Link, NavLink } from 'react-router';
 import { AuthContext } from '../../Contexts/AuthContext';
 import { Tooltip } from 'react-tooltip';
+import '../../index.css'
 
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
@@ -16,12 +17,14 @@ const Navbar = () => {
             })
     }
     
+    const getLinkClass = ({isActive})=> isActive?'nav-link active':'nav-link'
+
     const links = <>
-        <li><NavLink to='/'>Home</NavLink></li>
-        <li><NavLink to=''>Fridge</NavLink></li>
+        <li><NavLink className={getLinkClass} to='/'>Home</NavLink></li>
+        <li><NavLink className={getLinkClass} to='fridge'>Fridge</NavLink></li>
         {user && <>
-            <li><NavLink to='addfood'>AddFood</NavLink></li>
-            <li><NavLink to='myitems'>MyItems</NavLink></li>
+            <li><NavLink className={getLinkClass} to='addfood'>AddFood</NavLink></li>
+            <li><NavLink className={getLinkClass} to='myitems'>MyItems</NavLink></li>
         </>}
     </>
     return (
@@ -48,7 +51,7 @@ const Navbar = () => {
             <div className="navbar-end">
                 {
                     user ? <>
-                        <div>
+                        <div className='user_profile mr-5'>
                             <img
                                 className="w-12 h-12 rounded-full"
                                 src={user?.photoURL || logo}
@@ -58,11 +61,11 @@ const Navbar = () => {
                             />
                             <Tooltip id="user-tooltip" place="bottom" />
                         </div>
-                        <button onClick={handleLogout} className='btn'>Log Out</button>
+                        <button onClick={handleLogout} className='btn btn-outline btn-primary'>Log Out</button>
                     </>
                         :
                         <>
-                            <NavLink to='login'><button className="btn btn-secondary text-xs mr-2">Login</button></NavLink>
+                            <NavLink to='login'><button className="btn btn-info text-xs mr-2">Login</button></NavLink>
                             <NavLink to='register'><button className="hidden md:flex lg:flex btn btn-primary text-xs">Register</button></NavLink>
                         </>
                 }

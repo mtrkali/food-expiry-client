@@ -42,9 +42,9 @@ const Login = () => {
                 <h1 className="text-2xl font-bold">Login now!</h1>
                 <form onSubmit={handleSignIn} className="fieldset">
                     <label className="label">Email</label>
-                    <input type="email" className="input" name='email' placeholder="Email" />
+                    <input type="email" className="input" name='email' placeholder="Email" required />
                     <label className="label">Password</label>
-                    <input type="password" className="input" name='password' placeholder="Password" />
+                    <input type="password" className="input" name='password' placeholder="Password" required />
                     <div><a className="link link-hover">Forgot password?</a></div>
                     <button className="btn btn-neutral mt-4">Login</button>
                 </form>

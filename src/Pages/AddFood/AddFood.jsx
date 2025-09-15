@@ -1,11 +1,14 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../Contexts/AuthContext";
 import axios from "axios";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 const AddFood = () => {
     const { user } = useContext(AuthContext);
+    const navigate = useNavigate();
 
-    const handleAddFood = async(e) => {
+    const handleAddFood = async (e) => {
         e.preventDefault();
         const form = e.target;
         const formData = new FormData(form);
@@ -19,11 +22,18 @@ const AddFood = () => {
 
 
         //sending data to the db --
-        try{
-            const res =await axios.post('http://localhost:3000/foods',foodData)
-            console.log('server response is ',res.data)
-            alert('food added successfully')
-        }catch (err){
+        try {
+            const res = await axios.post('http://localhost:3000/foods', foodData)
+            console.log('server response is ', res.data)
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Successfully added your food",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            navigate(`/myitems`)
+        } catch (err) {
             console.error(err);
         }
     };

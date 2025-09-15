@@ -3,17 +3,17 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../Contexts/AuthContext';
 import Loading from '../Shared/Loading';
 import Swal from 'sweetalert2';
+import UpdateModal from './UpdateModal';
 
 const MyItems = () => {
     const { user } = useContext(AuthContext);
-    console.log(user)
     const [foods, setFoods] = useState([]);
     const [loading, setLoading] = useState(true);
 
 
     //for modal --
-    const[isOpen,setIsOpen] = useState(false);
-    const[selectedFood, setSelectedFood] = useState(null);
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedFood, setSelectedFood] = useState(null);
 
 
     useEffect(() => {
@@ -36,7 +36,7 @@ const MyItems = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, delete it!"
-        }).then(async(result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
                     const res = await axios.delete(`http://localhost:3000/foods/${_id}`)
@@ -46,7 +46,7 @@ const MyItems = () => {
                             text: "Your file has been deleted.",
                             icon: "success"
                         });
-                        setFoods(foods.filter(food=> food._id !== _id));
+                        setFoods(foods.filter(food => food._id !== _id));
                     }
                 } catch (error) {
                     console.error('data deleting error', error)
@@ -56,7 +56,7 @@ const MyItems = () => {
         });
     }
 
-    const handleUpdate = (food)=>{
+    const handleUpdate = (food) => {
         setSelectedFood(food);
         setIsOpen(true);
     }
@@ -82,8 +82,8 @@ const MyItems = () => {
                     </div>
                 ) :
                     (
-                        <div>
-                            <h2 className="text-2xl font-bold mb-4">My Items</h2>
+                        <div className='text-sm'>
+                            <h2 className="text-2xl font-bold mb-4 text-center text-blue-500">My Items</h2>
                             <table className="w-full border">
                                 <thead>
                                     <tr className=''>
@@ -97,9 +97,9 @@ const MyItems = () => {
                                 </thead>
                                 <tbody>
                                     {foods.map((food) => (
-                                        <tr key={food._id}>
-                                            <td className="border p-2 w-24">
-                                                <img src={food.foodImage} alt="" className="w-20 h-20 object-cover" />
+                                        <tr key={food._id} className=''>
+                                            <td className="border p-2 w-14 md:w-24">
+                                                <img src={food.foodImage} alt="" className="w-12 h-12 md:w-20 md:h-20 object-cover" />
                                             </td>
                                             <td className="border p-2">{food.foodTitle}</td>
                                             <td className="border p-2">{food.category}</td>
@@ -107,7 +107,7 @@ const MyItems = () => {
                                             <td className="border p-2">{food.expiryDate}</td>
                                             <td className="border p-2 space-x-2 text-center">
                                                 <button
-                                                onClick={()=>handleUpdate(food)}
+                                                    onClick={() => handleUpdate(food)}
                                                     className="bg-green-500 text-white px-3 py-1 rounded"
                                                 >
                                                     Update
@@ -125,6 +125,18 @@ const MyItems = () => {
                             </table>
                         </div>
                     )
+            }
+            {
+                isOpen && selectedFood && (
+                    <UpdateModal
+                        isOpen={isOpen}
+                        foods = {foods}
+                        setIsOpen={setIsOpen}
+                        selectedFood={selectedFood}
+                        setSelectedFood={setSelectedFood}
+                        setFoods={setFoods}
+                    />
+                )
             }
         </div>
     );

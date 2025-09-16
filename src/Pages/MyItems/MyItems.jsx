@@ -1,143 +1,137 @@
-import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../../Contexts/AuthContext';
-import Loading from '../Shared/Loading';
-import Swal from 'sweetalert2';
-import UpdateModal from './UpdateModal';
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../Contexts/AuthContext";
+import Loading from "../Shared/Loading";
+import Swal from "sweetalert2";
+import UpdateModal from "./UpdateModal";
+import { Pencil, Trash2 } from "lucide-react";
 
 const MyItems = () => {
     const { user } = useContext(AuthContext);
     const [foods, setFoods] = useState([]);
     const [loading, setLoading] = useState(true);
 
-
-    //for modal --
+    // for modal
     const [isOpen, setIsOpen] = useState(false);
     const [selectedFood, setSelectedFood] = useState(null);
 
-
     useEffect(() => {
         if (!user?.email) return;
-        axios.get(`http://localhost:3000/foods?email=${user?.email}`)
-            .then(res => {
-                setFoods(res.data)
-                setLoading(false)
+        axios
+            .get(`http://localhost:3000/foods?email=${user?.email}`)
+            .then((res) => {
+                setFoods(res.data);
+                setLoading(false);
             })
-            .catch((error) => console.error(error))
-    }, [])
-    console.log(foods);
+            .catch((error) => console.error(error));
+    }, [user?.email]);
 
     const handleDelete = (_id) => {
         Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
+            title: "Delete Item?",
+            text: "This action cannot be undone.",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
+            confirmButtonColor: "#2563eb",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
+            confirmButtonText: "Yes, delete it!",
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const res = await axios.delete(`http://localhost:3000/foods/${_id}`)
+                    const res = await axios.delete(
+                        `http://localhost:3000/foods/${_id}`
+                    );
                     if (res.data.deletedCount > 0) {
-                        Swal.fire({
-                            title: "Deleted!",
-                            text: "Your file has been deleted.",
-                            icon: "success"
-                        });
-                        setFoods(foods.filter(food => food._id !== _id));
+                        Swal.fire("Deleted!", "Item removed successfully.", "success");
+                        setFoods(foods.filter((food) => food._id !== _id));
                     }
                 } catch (error) {
-                    console.error('data deleting error', error)
+                    console.error("Delete error", error);
                 }
-
             }
         });
-    }
+    };
 
     const handleUpdate = (food) => {
         setSelectedFood(food);
         setIsOpen(true);
-    }
+    };
 
-    //my serverside code --
-    // app.get('/foods', async(req, res)=>{
-    //   const email = req.query.email;
-    //   const query = {userEmail: email};
-    //   const result = await foodCollection.find(query).toArray();
-    //   res.send(result);
-    // })
+    if (loading) return <Loading />;
 
-
-    if (loading) {
-        return <Loading></Loading>
-    }
     return (
-        <div className="">
-            {
-                foods.length === 0 ? (
-                    <div className='min-h-screen flex justify-center items-center'>
-                        <h1 className='text-2xl lg:text-5xl md:text-4xl font-bold italic text-accent'>you have not added food Item Yet!!!</h1>
+        <div className="min-h-screen px-4 py-8 bg-gray-50">
+            {foods.length === 0 ? (
+                <div className="flex justify-center items-center min-h-[60vh]">
+                    <h1 className="text-xl md:text-3xl lg:text-4xl font-semibold text-gray-500 text-center">
+                        You haven’t added any food items yet!!
+                    </h1>
+                </div>
+            ) : (
+                <div>
+                    <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center text-blue-600">
+                        My Items
+                    </h2>
+
+                    {/* dynamic part */}
+                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                        {foods.map((food) => (
+                            <div
+                                key={food._id}
+                                className="bg-white rounded-2xl shadow hover:shadow-lg transition p-4 flex flex-col"
+                            >
+                                <img
+                                    src={food.foodImage}
+                                    alt={food.foodTitle}
+                                    className="h-40 w-full object-cover rounded-xl mb-3"
+                                />
+                                <h3 className="text-lg font-semibold text-gray-800">
+                                    {food.foodTitle}
+                                </h3>
+                                <p className="text-sm text-gray-500">{food.category}</p>
+
+                                <div className="mt-3 flex flex-wrap justify-between text-sm text-gray-600">
+                                    <p>
+                                        <span className="font-medium">Qty:</span> {food.quantity}
+                                    </p>
+                                    <p>
+                                        <span className="font-medium">Expiry:</span>{" "}
+                                        {food.expiryDate}
+                                    </p>
+                                </div>
+
+                                {/* Actions */}
+                                <div className="mt-4 flex justify-between gap-2">
+                                    <button
+                                        onClick={() => handleUpdate(food)}
+                                        className="flex items-center justify-center gap-1 flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition"
+                                    >
+                                        <Pencil size={16} /> Update
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(food._id)}
+                                        className="flex items-center justify-center gap-1 flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg transition"
+                                    >
+                                        <Trash2 size={16} /> Delete
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                ) :
-                    (
-                        <div className='text-sm'>
-                            <h2 className="text-2xl font-bold mb-4 text-center text-blue-500">My Items</h2>
-                            <table className="w-full border">
-                                <thead>
-                                    <tr className=''>
-                                        <th className="p-2 border">Image</th>
-                                        <th className="p-2 border">Title</th>
-                                        <th className="p-2 border">Category</th>
-                                        <th className="p-2 border">Quantity</th>
-                                        <th className="p-2 border">Expiry</th>
-                                        <th className="p-2 border">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {foods.map((food) => (
-                                        <tr key={food._id} className=''>
-                                            <td className="border p-2 w-14 md:w-24">
-                                                <img src={food.foodImage} alt="" className="w-12 h-12 md:w-20 md:h-20 object-cover" />
-                                            </td>
-                                            <td className="border p-2">{food.foodTitle}</td>
-                                            <td className="border p-2">{food.category}</td>
-                                            <td className="border p-2">{food.quantity}</td>
-                                            <td className="border p-2">{food.expiryDate}</td>
-                                            <td className="border p-2 space-x-2 text-center">
-                                                <button
-                                                    onClick={() => handleUpdate(food)}
-                                                    className="bg-green-500 text-white px-3 py-1 rounded"
-                                                >
-                                                    Update
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDelete(food._id)}
-                                                    className="bg-red-500 text-white px-3 py-1 rounded"
-                                                >
-                                                    Delete
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    )
-            }
-            {
-                isOpen && selectedFood && (
-                    <UpdateModal
-                        isOpen={isOpen}
-                        foods = {foods}
-                        setIsOpen={setIsOpen}
-                        selectedFood={selectedFood}
-                        setSelectedFood={setSelectedFood}
-                        setFoods={setFoods}
-                    />
-                )
-            }
+                </div>
+            )}
+
+            {/* Update Modal compo */}
+            {isOpen && selectedFood && (
+                <UpdateModal
+                    isOpen={isOpen}
+                    foods={foods}
+                    setIsOpen={setIsOpen}
+                    selectedFood={selectedFood}
+                    setSelectedFood={setSelectedFood}
+                    setFoods={setFoods}
+                />
+            )}
         </div>
     );
 };

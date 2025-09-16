@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router';
-import RootLayout from '../Lay;outs/RootLayout';
+import RootLayout from '../Layouts/RootLayout';
 import Home from '../Pages/Home/Home';
 import TermsService from '../Pages/Shared/TermsService';
 import Register from '../Pages/Register/Register';
@@ -10,6 +10,7 @@ import MyItems from '../Pages/MyItems/MyItems';
 import PrivateRoute from '../PrivateRoute/PrivateRoute';
 import Fridge from '../Pages/Fridge/Fridge';
 import FoodDetails from '../Pages/FoodDetails/FoodDetails';
+import ErrorPage from '../Pages/Shared/ErrorPage';
 
 const router = createBrowserRouter([
     {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
                 path: '/foodDetails/:id',
                 loader: ({params})=>fetch(`http://localhost:3000/foods/${params.id}`),
                 Component: FoodDetails,
+            },
+            {
+                path:'*',
+                Component: ErrorPage
             }
         ]
     }

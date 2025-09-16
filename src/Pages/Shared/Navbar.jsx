@@ -5,6 +5,7 @@ import { AuthContext } from "../../Contexts/AuthContext";
 import { Tooltip } from "react-tooltip";
 import axios from "axios";
 import { FaArrowRight } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
@@ -14,6 +15,14 @@ const Navbar = () => {
         logOut()
             .then(() => {
                 console.log("signOut success");
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "logOut successfull!!",
+                    text: "you can sign in now",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             })
             .catch((err) => {
                 console.log(err.message);
@@ -25,7 +34,6 @@ const Navbar = () => {
         axios(`http://localhost:3000/users?email=${user?.email}`)
             .then((res) => {
                 setEmUser(res.data);
-                console.log(user)
             })
             .catch((err) => console.error(err));
     }, [user?.email]);

@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { AuthContext } from '../../Contexts/AuthContext';
 import { Link, useLocation, useNavigate } from 'react-router';
 import Devider from '../Shared/Devider';
+import Swal from 'sweetalert2';
 
 const Login = () => {
     const { logInUser, googleSignIn } = useContext(AuthContext);
@@ -14,21 +15,49 @@ const Login = () => {
         const formData = new FormData(form);
         const { email, password } = Object.fromEntries(formData.entries());
 
-        //create user --
+        //login user --
         logInUser(email, password)
             .then(result => {
-                console.log(result.user);
+                if (result.user) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "login Successful!!",
+                        text: "User created",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
                 navigate(from)
             })
             .catch(err => {
-                console.log(err.message)
+                if (err) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "email and possword not matching!!",
+                        text: "Password must have at least 1 uppercase, 1 lowercase, and 6 characters.",
+                        showConfirmButton: false,
+                        timer: 3500
+                    });
+                }
             })
     }
 
     const signInGoogle = () => {
         return googleSignIn()
             .then(result => {
-                console.log('google User ', result.user)
+                if (result.user) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "login Successful!!",
+                        text: "User created",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+                navigate(from)
             })
             .catch(err => {
                 console.log(err.message);

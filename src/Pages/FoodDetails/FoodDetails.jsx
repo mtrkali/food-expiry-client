@@ -106,10 +106,10 @@ const FoodDetails = () => {
                     </div>
                     <div>
                         <p>
-                            <strong>Expiry Date:</strong> {food.expiryDate}
+                            <strong>Expiry Date:</strong> {new Date(food.expiryDate).toISOString().split('T')[0]}
                         </p>
                         <p>
-                            <strong>Added Date:</strong> {food.addedDate}
+                            <strong>Added Date:</strong> {new Date(food.addedDate).toISOString().split('T')[0]}
                         </p>
                     </div>
                     <p className="italic">

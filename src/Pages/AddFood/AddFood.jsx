@@ -15,7 +15,7 @@ const AddFood = () => {
     const formData = new FormData(form);
     const foodData = Object.fromEntries(formData.entries());
 
-    foodData.addedDate = new Date().toISOString().split("T")[0];
+    foodData.addedDate = new Date()
     foodData.userEmail = user?.email;
 
     try {
@@ -72,7 +72,7 @@ const AddFood = () => {
               type="text"
               name="foodTitle"
               required
-              className="w-full rounded-lg p-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+              className="w-full rounded-lg p-3 text-black bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
               placeholder="Enter food title"
             />
           </fieldset>
@@ -85,7 +85,7 @@ const AddFood = () => {
             <select
               name="category"
               required
-              className="w-full rounded-lg p-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+              className="w-full rounded-lg p-3 text-black bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
             >
               <option value="">Select Category</option>
               <option value="Dairy">Dairy</option>
@@ -130,7 +130,7 @@ const AddFood = () => {
               type="date"
               name="expiryDate"
               required
-              className="w-full rounded-lg p-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+              className="w-full text-black rounded-lg p-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
             />
           </fieldset>
 
@@ -142,7 +142,7 @@ const AddFood = () => {
             <textarea
               name="description"
               rows="3"
-              className="w-full rounded-lg p-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+              className="w-full text-black rounded-lg p-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
               placeholder="Enter food description"
             ></textarea>
           </fieldset>

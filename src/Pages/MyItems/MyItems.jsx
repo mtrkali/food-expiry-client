@@ -96,7 +96,7 @@ const MyItems = () => {
                                     </p>
                                     <p>
                                         <span className="font-medium">Expiry:</span>{" "}
-                                        {food.expiryDate}
+                                        {new Date(food.expiryDate).toISOString().split('T')[0]}
                                     </p>
                                 </div>
 

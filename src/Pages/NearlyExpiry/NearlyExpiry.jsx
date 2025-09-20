@@ -1,26 +1,27 @@
 import axios from 'axios';
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import Loading from '../Shared/Loading';
+import { AuthContext } from '../../Contexts/AuthContext';
+import UseAxiosSecure from '../../Hooks/UseAxiosSecure';
 
 const NearlyExpiry = () => {
+    const {user} = useContext(AuthContext);
     const [foods, setFoods] = useState([]);
     const [loading, setLoading] = useState(true);
+    const axiosSecure = UseAxiosSecure();
     useEffect(() => {
-        axios.get('http://localhost:3000/foods?type=nearly-expiry')
-            .then(res => {
-                setFoods(res.data);
-                setLoading(false);
-            })
+        if(!user?.email) return;
+        axiosSecure.get(`foods?email=${user.email}&type=nearly-expiry`)
+            .then(res => setFoods(res.data))
             .catch(err => console.error(err))
-    }, [])
+            .finally(()=> setLoading(false))
+    }, [user,axiosSecure])
     if (loading) {
         return <Loading></Loading>
     }
 
-
-    console.log(foods)
     return (
         <div className='my-5'>
             <h1 className="text-center text-3xl font-semibold">Nearly Expire item</h1>

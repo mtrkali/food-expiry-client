@@ -4,22 +4,23 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 const UpdateModal = ({ isOpen, setIsOpen, selectedFood, setSelectedFood, setFoods, foods }) => {
+    console.log(selectedFood)
     const { user } = useContext(AuthContext)
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!isOpen || !selectedFood) return null;
         const form = e.target;
         const formData = new FormData(form);
         const updatedFood = Object.fromEntries(formData.entries());
-        try{
-            const res = await axios.put(`http://localhost:3000/foods/${selectedFood._id}`,updatedFood);
-            if(res.data.modifiedCount > 0){
-                Swal.fire("Success","Food Updated","success");
-                setFoods((foods) =>foods.map(food => food._id === selectedFood._id ?{...food,...updatedFood}:food))
+        try {
+            const res = await axios.put(`http://localhost:3000/foods/${selectedFood._id}`, updatedFood);
+            if (res.data.modifiedCount > 0) {
+                Swal.fire("Success", "Food Updated", "success");
+                setFoods((foods) => foods.map(food => food._id === selectedFood._id ? { ...food, ...updatedFood } : food))
             }
             setIsOpen(false);
             setSelectedFood(null);
-        }catch(error){
+        } catch (error) {
             console.error(error);
         }
     }
@@ -95,7 +96,11 @@ const UpdateModal = ({ isOpen, setIsOpen, selectedFood, setSelectedFood, setFood
                         <input
                             type="date"
                             name="expiryDate"
-                            defaultValue={selectedFood.expiryDate}
+                            defaultValue={
+                                selectedFood?.expiryDate
+                                    ? new Date(selectedFood.expiryDate).toISOString().split("T")[0]
+                                    : ""
+                            }
                             className="w-full border rounded-lg p-2"
                         />
                     </fieldset>

@@ -5,26 +5,33 @@ import Loading from "../Shared/Loading";
 import Swal from "sweetalert2";
 import UpdateModal from "./UpdateModal";
 import { Pencil, Trash2 } from "lucide-react";
+import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
 
 const MyItems = () => {
     const { user } = useContext(AuthContext);
     const [foods, setFoods] = useState([]);
     const [loading, setLoading] = useState(true);
+    const axiosSecure = UseAxiosSecure();
 
     // for modal
     const [isOpen, setIsOpen] = useState(false);
     const [selectedFood, setSelectedFood] = useState(null);
 
+
     useEffect(() => {
         if (!user?.email) return;
-        axios
-            .get(`http://localhost:3000/foods?email=${user?.email}`)
-            .then((res) => {
+        const fetchFood = async () => {
+            try {
+                const res = await axiosSecure.get(`my-foods?email=${user.email}`)
                 setFoods(res.data);
+            } catch (err) {
+                console.error(err);
+            } finally {
                 setLoading(false);
-            })
-            .catch((error) => console.error(error));
-    }, [user?.email]);
+            }
+        }
+        fetchFood();
+    }, [user?.email, axiosSecure])
 
     const handleDelete = (_id) => {
         Swal.fire({
@@ -38,8 +45,8 @@ const MyItems = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const res = await axios.delete(
-                        `http://localhost:3000/foods/${_id}`
+                    const res = await axiosSecure.delete(
+                        `foods/${_id}`
                     );
                     if (res.data.deletedCount > 0) {
                         Swal.fire("Deleted!", "Item removed successfully.", "success");
@@ -96,7 +103,9 @@ const MyItems = () => {
                                     </p>
                                     <p>
                                         <span className="font-medium">Expiry:</span>{" "}
-                                        {new Date(food.expiryDate).toISOString().split('T')[0]}
+                                        {food.expiryDate && !isNaN(new Date(food.expiryDate))
+                                            ? new Date(food.expiryDate).toISOString().split("T")[0]
+                                            : "N/A"}
                                     </p>
                                 </div>
 

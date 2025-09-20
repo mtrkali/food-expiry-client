@@ -17,7 +17,7 @@ const Register = () => {
         const { email, password, photo, name } = Object.fromEntries(formData.entries());
 
         const newUser = { name, email, photo };
-        console.log(newUser);
+
 
         if (!passwordRegex.test(password)) {
             return Swal.fire({
@@ -33,11 +33,11 @@ const Register = () => {
         try {
             // create user in firebase/auth
             const result = await createUser(email, password);
-            console.log(result.user);
 
-            // send to db
-            const res = await axios.post("http://localhost:3000/users", newUser);
-
+            if (result.user) {
+            console.log(result.user)
+                // send to db
+                const res = await axios.post("http://localhost:3000/users", newUser);
             if (res.data.insertedId) {
                 Swal.fire({
                     position: "center",
@@ -50,6 +50,7 @@ const Register = () => {
             }
 
             setUser(prev => ({ ...prev, displayName: name, photoURL: photo }));
+            }
         } catch (err) {
             console.error(err);
             Swal.fire({

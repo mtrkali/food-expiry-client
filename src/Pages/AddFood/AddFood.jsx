@@ -4,10 +4,12 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
 import { PlusCircle } from "lucide-react";
+import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
 
 const AddFood = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const axiosSecure = UseAxiosSecure();
 
   const handleAddFood = async (e) => {
     e.preventDefault();
@@ -19,8 +21,7 @@ const AddFood = () => {
     foodData.userEmail = user?.email;
 
     try {
-      const res = await axios.post("http://localhost:3000/foods", foodData);
-      console.log("server response is ", res.data);
+      const res = await axiosSecure.post(`/foods?email=${user.email}`, foodData);
       Swal.fire({
         position: "center",
         icon: "success",
@@ -35,7 +36,7 @@ const AddFood = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-10 bg-gray-200 rounded-lg">
+    <div className="min-h-screen flex items-center justify-center px-4 py-10 text-black bg-gray-200 rounded-lg">
       <div className="w-full max-w-2xl bg-white shadow-lg rounded-2xl p-6 md:p-10">
         {/* Title */}
         <div className="text-center mb-8">
@@ -58,7 +59,7 @@ const AddFood = () => {
               type="text"
               name="foodImage"
               required
-              className="w-full rounded-lg p-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+              className="w-full rounded-lg p-3 text-black focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
               placeholder="Enter image URL"
             />
           </fieldset>
@@ -144,6 +145,7 @@ const AddFood = () => {
               rows="3"
               className="w-full text-black rounded-lg p-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
               placeholder="Enter food description"
+              required
             ></textarea>
           </fieldset>
 

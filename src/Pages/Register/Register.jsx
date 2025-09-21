@@ -35,7 +35,6 @@ const Register = () => {
             const result = await createUser(email, password);
 
             if (result.user) {
-            console.log(result.user)
                 // send to db
                 const res = await axios.post("https://food-expiry-server-seven.vercel.app/users", newUser);
             if (res.data.insertedId) {

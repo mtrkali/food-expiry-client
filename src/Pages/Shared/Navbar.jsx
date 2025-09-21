@@ -14,7 +14,6 @@ const Navbar = () => {
     const handleLogout = () => {
         logOut()
             .then(() => {
-                console.log("signOut success");
                 Swal.fire({
                     position: "center",
                     icon: "success",

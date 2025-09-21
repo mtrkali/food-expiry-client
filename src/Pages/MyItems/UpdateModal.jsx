@@ -4,7 +4,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 const UpdateModal = ({ isOpen, setIsOpen, selectedFood, setSelectedFood, setFoods, foods }) => {
-    console.log(selectedFood)
+
     const { user } = useContext(AuthContext)
     const handleSubmit = async (e) => {
         e.preventDefault();

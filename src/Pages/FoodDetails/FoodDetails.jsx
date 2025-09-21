@@ -60,7 +60,7 @@ const FoodDetails = () => {
 
         try {
             const res = await axios.patch(
-                `http://localhost:3000/foods/${food._id}`,
+                `https://food-expiry-server-seven.vercel.app/foods/${food._id}`,
                 newNote
             );
 

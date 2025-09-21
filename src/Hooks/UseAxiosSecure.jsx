@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { AuthContext } from '../Contexts/AuthContext';
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:3000/'
+    baseURL: 'https://food-expiry-server-seven.vercel.app/'
 })
 const UseAxiosSecure = () => {
     const { user, logOut } = useContext(AuthContext);

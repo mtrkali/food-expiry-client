@@ -1,21 +1,19 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import Loading from '../Shared/Loading';
-import UseAxiosSecure from '../../Hooks/UseAxiosSecure';
 import { AuthContext } from '../../Contexts/AuthContext';
 
 const ExpiredFood = () => {
     const {user} = useContext(AuthContext)
     const [foods, setFoods] = useState([])
     const [loading, setLoading] = useState(true);
-    const axiosSecure = UseAxiosSecure();
+
     useEffect(() => {
-        if(!user?.email) return;
-        axiosSecure.get(`foods?email=${user?.email}&expired=true`)
+        axios.get('https://food-expiry-server-seven.vercel.app/foods?expired=true')
             .then(res => setFoods(res.data))
             .catch(err => console.error(err))
             .finally(()=>setLoading(false))
-    }, [user,axiosSecure])
+    },[])
     if (loading) {
         return <Loading></Loading>
     }

@@ -13,7 +13,7 @@ const UpdateModal = ({ isOpen, setIsOpen, selectedFood, setSelectedFood, setFood
         const formData = new FormData(form);
         const updatedFood = Object.fromEntries(formData.entries());
         try {
-            const res = await axios.put(`http://localhost:3000/foods/${selectedFood._id}`, updatedFood);
+            const res = await axios.put(`https://food-expiry-server-seven.vercel.app/foods/${selectedFood._id}`, updatedFood);
             if (res.data.modifiedCount > 0) {
                 Swal.fire("Success", "Food Updated", "success");
                 setFoods((foods) => foods.map(food => food._id === selectedFood._id ? { ...food, ...updatedFood } : food))

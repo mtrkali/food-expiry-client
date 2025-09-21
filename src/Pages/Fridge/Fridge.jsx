@@ -24,7 +24,7 @@ const Fridge = () => {
         if(search) params.append('search', search);
         if(category) params.append('category', category);
 
-        const url = `http://localhost:3000/foods?${params.toString()}`;
+        const url = `https://food-expiry-server-seven.vercel.app/foods?${params.toString()}`;
 
         fetch(url, { signal: controller.signal })
             .then(res => res.json())

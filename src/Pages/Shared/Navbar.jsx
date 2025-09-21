@@ -31,7 +31,7 @@ const Navbar = () => {
 
     useEffect(() => {
         if (!user?.email) return;
-        axios(`http://localhost:3000/users?email=${user?.email}`)
+        axios(`https://food-expiry-server-seven.vercel.app/users?email=${user?.email}`)
             .then((res) => {
                 setEmUser(res.data);
             })

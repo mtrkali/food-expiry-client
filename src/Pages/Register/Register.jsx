@@ -37,7 +37,7 @@ const Register = () => {
             if (result.user) {
             console.log(result.user)
                 // send to db
-                const res = await axios.post("http://localhost:3000/users", newUser);
+                const res = await axios.post("https://food-expiry-server-seven.vercel.app/users", newUser);
             if (res.data.insertedId) {
                 Swal.fire({
                     position: "center",

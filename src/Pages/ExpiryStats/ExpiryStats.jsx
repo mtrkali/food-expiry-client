@@ -26,25 +26,25 @@ const ExpiryStats = () => {
     ];
 
     useEffect(() => {
-        axios.get('http://localhost:3000/foods?expired=true')
+        axios.get('https://food-expiry-server-seven.vercel.app/foods?expired=true')
             .then(res => { setExpFoods(res.data); setLoading(false); })
             .catch(err => console.error(err))
     }, []);
 
     useEffect(() => {
-        axios.get('http://localhost:3000/foods?expired=false')
+        axios.get('https://food-expiry-server-seven.vercel.app/foods?expired=false')
             .then(res => { setFrFoods(res.data); setLoading(false); })
             .catch(err => console.error(err))
     }, []);
 
     useEffect(() => {
-        axios.get('http://localhost:3000/foods')
+        axios.get('https://food-expiry-server-seven.vercel.app/foods')
             .then(res => { setFoods(res.data); setLoading(false); })
             .catch(err => console.error(err))
     }, []);
 
     useEffect(() => {
-        axios.get('http://localhost:3000/foods?type=nearly-expiry')
+        axios.get('https://food-expiry-server-seven.vercel.app/foods?type=nearly-expiry')
             .then(res => { setNrExFoods(res.data); setLoading(false); })
             .catch(err => console.error(err))
     }, []);

@@ -44,12 +44,12 @@ const router = createBrowserRouter([
             ,
             {
                 path: 'fridge',
-                loader: ()=>fetch('http://localhost:3000/foods'),
+                loader: ()=>fetch('https://food-expiry-server-seven.vercel.app/foods'),
                 Component: Fridge,
             },
             {
                 path: '/foodDetails/:id',
-                loader: ({params})=>fetch(`http://localhost:3000/foods/${params.id}`),
+                loader: ({params})=>fetch(`https://food-expiry-server-seven.vercel.app/foods/${params.id}`),
                 Component: FoodDetails,
             },
             {

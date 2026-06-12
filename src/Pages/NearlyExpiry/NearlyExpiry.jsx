@@ -83,11 +83,6 @@ const NearlyExpiry = () => {
           </motion.div>
         ))}
       </div>
-      {!foods.length && (
-        <h1 className="min-h-screen animate-pulse text-3xl p-10 text-center bg-slate-500">
-          no item available yet!!
-        </h1>
-      )}
     </div>
   );
 };
